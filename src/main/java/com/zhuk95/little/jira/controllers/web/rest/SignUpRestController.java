@@ -1,5 +1,7 @@
 package com.zhuk95.little.jira.controllers.web.rest;
 
+import com.zhuk95.little.jira.services.SignUpService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "api/registration", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class SignUpRestController {
+
+    @Autowired
+    SignUpService signUpService;
 
     @PostMapping(value = "signUp", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity sigUp() {
