@@ -32,4 +32,9 @@ public class UserDaoImpl implements UserDao {
     public UserEntity getByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    @Override
+    public List<UserEntity> findAllById(List<Integer> ids) {
+        return userRepository.findById(ids);
+    }
 }

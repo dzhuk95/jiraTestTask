@@ -1,30 +1,59 @@
 package com.zhuk95.little.jira.services.impl;
 
 import com.zhuk95.little.jira.dao.ProjectDao;
+import com.zhuk95.little.jira.dao.UserDao;
+import com.zhuk95.little.jira.models.AuthorizedUser;
+import com.zhuk95.little.jira.models.api.req.AddUserToProjectReq;
+import com.zhuk95.little.jira.models.api.req.CreateProjectReq;
+import com.zhuk95.little.jira.models.api.resp.ListResp;
+import com.zhuk95.little.jira.models.entities.ProjectEntity;
+import com.zhuk95.little.jira.models.entities.ProjectUserEntity;
+import com.zhuk95.little.jira.models.entities.UserEntity;
 import com.zhuk95.little.jira.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+
 @Service("projectService")
 public class ProjectServiceImpl implements ProjectService {
     @Autowired
-    ProjectDao projectDao;
+    private ProjectDao projectDao;
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public ResponseEntity getProjects() {
-        int userId = 1;
-        projectDao.getAllByUser(userId);
-        return null;
+        List<ProjectEntity> project = projectDao.getAll();
+        return ResponseEntity.ok(new ListResp(project.size(), project));
     }
 
     @Override
-    public ResponseEntity createProject() {
-        return null;
+    public ResponseEntity getProjectsForUser() {
+        List<ProjectEntity> project = projectDao.getAllByUser(AuthorizedUser.id());
+        return ResponseEntity.ok(new ListResp(project.size(), project));
     }
 
     @Override
-    public ResponseEntity addDeveloperToProject() {
-        return null;
+    public ResponseEntity createProject(CreateProjectReq createProjectReq) {
+        ProjectEntity projectEntity = ProjectEntity.of(createProjectReq);
+        projectDao.saveOrUpdate(projectEntity);
+        List<UserEntity> usersToProject = userDao.findAllById(createProjectReq.getUserIds());
+        usersToProject.add(AuthorizedUser.get().getUserEntity());
+        projectDao.saveOrUpdate(usersToProject.stream().
+                map(item -> ProjectUserEntity.of(item, projectEntity)).collect(toList()));
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity addDeveloperToProject(AddUserToProjectReq addUserToProjectReq) {
+        ProjectEntity entity = projectDao.getById(addUserToProjectReq.getProjectId());
+        List<UserEntity> usersToProject = userDao.findAllById(addUserToProjectReq.getIds());
+        projectDao.saveOrUpdate(usersToProject.stream().
+                map(item -> ProjectUserEntity.of(item, entity)).collect(toList()));
+        return ResponseEntity.ok().build();
     }
 }

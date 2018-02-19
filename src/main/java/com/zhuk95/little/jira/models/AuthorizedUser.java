@@ -1,7 +1,7 @@
-package com.zhuk95.little.jira.controllers.web.model;
+package com.zhuk95.little.jira.models;
 
 
-import com.zhuk95.little.jira.controllers.web.model.entity.UserEntity;
+import com.zhuk95.little.jira.models.entities.UserEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +14,7 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
     private UserEntity userEntity;
 
     public AuthorizedUser(UserEntity user) {
-        super(user.getEmail(), user.getPassword(), user.isActive(), true, true, true,
+        super(user.getEmail(), user.getPassWord(), user.isActive(), true, true, true,
                 Collections.singletonList(user.getRole()));
         this.userEntity = user;
     }

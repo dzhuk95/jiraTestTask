@@ -19,6 +19,15 @@ public class ProjectUserEntity extends BaseEntity {
     public ProjectUserEntity() {
     }
 
+    public ProjectUserEntity(ProjectEntity project, UserEntity user) {
+        this.project = project;
+        this.user = user;
+    }
+
+    public static ProjectUserEntity of(UserEntity userEntity, ProjectEntity projectEntity) {
+        return new ProjectUserEntity(projectEntity, userEntity);
+    }
+
     public ProjectEntity getProject() {
         return project;
     }

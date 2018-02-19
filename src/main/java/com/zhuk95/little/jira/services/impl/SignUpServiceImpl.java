@@ -2,6 +2,7 @@ package com.zhuk95.little.jira.services.impl;
 
 import com.zhuk95.little.jira.dao.RegistrationUUIDDao;
 import com.zhuk95.little.jira.dao.UserDao;
+import com.zhuk95.little.jira.models.AuthorizedUser;
 import com.zhuk95.little.jira.models.api.req.RegistrationReq;
 import com.zhuk95.little.jira.models.entities.RegistrationUUIDEntity;
 import com.zhuk95.little.jira.models.entities.UserEntity;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -66,5 +68,13 @@ public class SignUpServiceImpl implements SignUpService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public AuthorizedUser loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity ue = userDao.getByEmail(username);
+        if (ue == null)
+            throw new IllegalArgumentException("Email is never used");
+        return new AuthorizedUser(ue);
     }
 }

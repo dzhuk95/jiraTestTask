@@ -14,4 +14,6 @@ public interface TaskDao {
 
     void deleteTask(TaskEntity task);
 
+    TaskEntity get(int id);
+
 }

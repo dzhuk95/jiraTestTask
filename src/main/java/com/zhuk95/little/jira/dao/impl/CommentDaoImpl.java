@@ -23,7 +23,12 @@ public class CommentDaoImpl implements CommentDao {
     @Override
     @Transactional
     @Modifying
-    public void delete(CommentEntity comment) {
+    public void delete(int comment) {
         commentRepository.delete(comment);
+    }
+
+    @Override
+    public CommentEntity get(int id) {
+        return commentRepository.findOne(id);
     }
 }

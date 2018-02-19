@@ -11,4 +11,6 @@ public interface UserDao {
     boolean saveOrUpdate(UserEntity user);
 
     UserEntity getByEmail(String email);
+
+    List<UserEntity> findAllById(List<Integer> ids);
 }

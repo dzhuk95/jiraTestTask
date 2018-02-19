@@ -13,13 +13,23 @@ import java.util.List;
 @Repository
 public class ProjectDaoImpl implements ProjectDao {
     @Autowired
-    ProjectRepository projectRepository;
+    private ProjectRepository projectRepository;
     @Autowired
-    ProjectUserRepository projectUserRepository;
+    private ProjectUserRepository projectUserRepository;
 
     @Override
     public List<ProjectEntity> getAllByUser(int userId) {
         return null;
+    }
+
+    @Override
+    public List<ProjectEntity> getAll() {
+        return projectRepository.findAll();
+    }
+
+    @Override
+    public ProjectEntity getById(int id) {
+        return projectRepository.findOne(id);
     }
 
     @Override
@@ -28,7 +38,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public void addUserToProject(List<ProjectUserEntity> projectUserEntities) {
-        projectUserRepository.save(projectUserEntities);
+    public void saveOrUpdate(List<ProjectUserEntity> userProjectList) {
+        projectUserRepository.save(userProjectList);
     }
 }

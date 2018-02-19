@@ -6,6 +6,7 @@ public interface CommentDao {
 
     CommentEntity saveOrUpdate(CommentEntity comment);
 
-    void delete(CommentEntity comment);
+    void delete(int comment);
 
+    CommentEntity get(int id);
 }

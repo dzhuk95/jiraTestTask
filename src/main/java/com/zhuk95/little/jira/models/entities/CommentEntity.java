@@ -19,6 +19,15 @@ public class CommentEntity extends BaseEntity {
     public CommentEntity() {
     }
 
+    private CommentEntity(String text, TaskEntity taskEntity) {
+        this.text = text;
+        this.taskEntity = taskEntity;
+    }
+
+    public static CommentEntity of(String text, TaskEntity taskEntity) {
+        return new CommentEntity(text, taskEntity);
+    }
+
     public String getText() {
         return text;
     }

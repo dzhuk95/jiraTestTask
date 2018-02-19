@@ -10,7 +10,12 @@ public interface ProjectDao {
 
     List<ProjectEntity> getAllByUser(int userId);
 
+    List<ProjectEntity> getAll();
+
+    ProjectEntity getById(int id);
+
     ProjectEntity saveOrUpdate(ProjectEntity projectEntity);
 
-    void addUserToProject(List<ProjectUserEntity> projectUserEntities);
+    void saveOrUpdate(List<ProjectUserEntity> userProjectList);
+
 }

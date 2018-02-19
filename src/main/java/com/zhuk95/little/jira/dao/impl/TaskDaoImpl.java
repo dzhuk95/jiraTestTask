@@ -38,4 +38,9 @@ public class TaskDaoImpl implements TaskDao {
     public void deleteTask(TaskEntity task) {
         taskRepository.delete(task);
     }
+
+    @Override
+    public TaskEntity get(int id) {
+        return taskRepository.findOne(id);
+    }
 }

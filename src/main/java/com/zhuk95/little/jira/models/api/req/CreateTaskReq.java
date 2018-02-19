@@ -2,7 +2,7 @@ package com.zhuk95.little.jira.models.api.req;
 
 import javax.validation.constraints.NotNull;
 
-public class CreateTask {
+public class CreateTaskReq {
     @NotNull
     private String name;
     @NotNull
@@ -10,7 +10,7 @@ public class CreateTask {
     @NotNull
     private Integer[] developers;
 
-    public CreateTask() {
+    public CreateTaskReq() {
     }
 
     public String getName() {
