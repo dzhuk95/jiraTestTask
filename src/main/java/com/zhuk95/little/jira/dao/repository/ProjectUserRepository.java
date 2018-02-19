@@ -2,6 +2,16 @@ package com.zhuk95.little.jira.dao.repository;
 
 import com.zhuk95.little.jira.models.entities.ProjectUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface ProjectUserRepository extends JpaRepository<ProjectUserEntity,Integer> {
+import java.util.List;
+
+public interface ProjectUserRepository extends JpaRepository<ProjectUserEntity, Integer> {
+
+    @Query("SELECT pue FROM ProjectUserEntity as pue " +
+            "inner join fetch pue.project as p" +
+            "inner join fetch pue.user as u" +
+            " WHERE u.id=:userId")
+    List<ProjectUserEntity> getByUserId(@Param("userId") int userId);
 }

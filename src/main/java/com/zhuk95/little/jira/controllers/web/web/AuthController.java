@@ -19,8 +19,7 @@ public class AuthController {
 
     @GetMapping(value = "/activate")
     public String activationPage(@RequestParam String uuid) {
-        //TODO activation logic;
-
+        signUpService.activateAccount(uuid);
         return "login";
     }
 

@@ -4,7 +4,7 @@ import com.zhuk95.little.jira.dao.ProjectDao;
 import com.zhuk95.little.jira.dao.repository.ProjectRepository;
 import com.zhuk95.little.jira.dao.repository.ProjectUserRepository;
 import com.zhuk95.little.jira.models.entities.ProjectEntity;
-import com.zhuk95.little.jira.models.entities.UserEntity;
+import com.zhuk95.little.jira.models.entities.ProjectUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,12 +18,17 @@ public class ProjectDaoImpl implements ProjectDao {
     ProjectUserRepository projectUserRepository;
 
     @Override
-    public List<ProjectEntity> getAll() {
+    public List<ProjectEntity> getAllByUser(int userId) {
         return null;
     }
 
     @Override
-    public List<ProjectEntity> getAllByUser(UserEntity userEntity) {
-        return null;
+    public ProjectEntity saveOrUpdate(ProjectEntity projectEntity) {
+        return projectRepository.save(projectEntity);
+    }
+
+    @Override
+    public void addUserToProject(List<ProjectUserEntity> projectUserEntities) {
+        projectUserRepository.save(projectUserEntities);
     }
 }

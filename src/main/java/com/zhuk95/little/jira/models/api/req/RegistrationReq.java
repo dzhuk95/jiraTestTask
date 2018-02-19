@@ -1,8 +1,10 @@
 package com.zhuk95.little.jira.models.api.req;
 
+import com.zhuk95.little.jira.models.enums.Role;
+
 import javax.validation.constraints.NotNull;
 
-public class RegistrtionReq {
+public class RegistrationReq {
     @NotNull
     private String email;
     @NotNull
@@ -10,9 +12,11 @@ public class RegistrtionReq {
     @NotNull
     private String firstName;
     @NotNull
-    private String lastNAme;
+    private String lastName;
+    @NotNull
+    private Role role;
 
-    public RegistrtionReq() {
+    public RegistrationReq() {
     }
 
     public String getEmail() {
@@ -39,11 +43,19 @@ public class RegistrtionReq {
         this.firstName = firstName;
     }
 
-    public String getLastNAme() {
-        return lastNAme;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastNAme(String lastNAme) {
-        this.lastNAme = lastNAme;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

@@ -1,15 +1,12 @@
 package com.zhuk95.little.jira.models.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user_task")
 public class UserTaskEntity extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "task_id")
     private TaskEntity task;
     @ManyToOne

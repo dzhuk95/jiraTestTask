@@ -9,4 +9,6 @@ public interface UserDao {
     List<UserEntity> getAll();
 
     boolean saveOrUpdate(UserEntity user);
+
+    UserEntity getByEmail(String email);
 }

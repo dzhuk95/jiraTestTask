@@ -5,22 +5,31 @@ import com.zhuk95.little.jira.dao.repository.UserRepository;
 import com.zhuk95.little.jira.dao.repository.UserTaskRepository;
 import com.zhuk95.little.jira.models.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Override
     public List<UserEntity> getAll() {
-        return null;
+        return userRepository.getAllUser();
     }
 
     @Override
+    @Transactional
+    @Modifying
     public boolean saveOrUpdate(UserEntity user) {
-        return false;
+        return userRepository.save(user).getId() != null;
+    }
+
+    @Override
+    public UserEntity getByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

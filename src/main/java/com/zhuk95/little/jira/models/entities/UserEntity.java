@@ -1,5 +1,6 @@
 package com.zhuk95.little.jira.models.entities;
 
+import com.zhuk95.little.jira.models.api.req.RegistrationReq;
 import com.zhuk95.little.jira.models.enums.Role;
 
 import javax.persistence.Column;
@@ -26,7 +27,26 @@ public class UserEntity extends BaseEntity {
     @Column(name = "role")
     private Role role;
 
+    @Column(name = "active", nullable = false, columnDefinition = "bit default 0")
+    private boolean active;
+
     public UserEntity() {
+    }
+
+    public UserEntity(String email, String passWord, String firsName, String lastName, Role role) {
+        this.email = email;
+        this.passWord = passWord;
+        this.firsName = firsName;
+        this.lastName = lastName;
+        this.role = role;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getEmail() {
@@ -67,5 +87,10 @@ public class UserEntity extends BaseEntity {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public static UserEntity of(RegistrationReq registrationReq) {
+        return new UserEntity(registrationReq.getEmail(), registrationReq.getPassWord(),
+                registrationReq.getFirstName(), registrationReq.getLastName(), registrationReq.getRole());
     }
 }

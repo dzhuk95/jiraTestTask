@@ -16,10 +16,15 @@ public class TaskEntity extends BaseEntity {
     @Column(name = "description")
     private String description;
 
+    @ManyToOne(cascade = CascadeType.MERGE, optional = false)
+    @JoinColumn(name = "project_id")
+    @Fetch(FetchMode.JOIN)
+    private ProjectEntity project;
+
     @Enumerated
     private TaskStatus taskStatus;
 
-    @OneToMany(mappedBy = "task",cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "taskEntity", cascade = CascadeType.MERGE)
     private List<CommentEntity> comments;
 
     public TaskEntity() {
@@ -55,5 +60,13 @@ public class TaskEntity extends BaseEntity {
 
     public void setComments(List<CommentEntity> comments) {
         this.comments = comments;
+    }
+
+    public ProjectEntity getProject() {
+        return project;
+    }
+
+    public void setProject(ProjectEntity project) {
+        this.project = project;
     }
 }
