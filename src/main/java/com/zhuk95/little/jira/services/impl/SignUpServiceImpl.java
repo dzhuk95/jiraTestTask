@@ -9,27 +9,27 @@ import com.zhuk95.little.jira.models.entities.UserEntity;
 import com.zhuk95.little.jira.services.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+//import org.springframework.mail.SimpleMailMessage;
+//import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.annotation.Validated;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.UUID;
 
 import static com.zhuk95.little.jira.util.utilVaraibles.VALID_EMAIL_ADDRESS_REGEX;
 
+//TODO send mail
 @Service("signUpService")
 public class SignUpServiceImpl implements SignUpService {
     @Autowired
     private UserDao userDao;
     @Autowired
     private RegistrationUUIDDao registrationUUIDDao;
-    @Autowired
-    private JavaMailSender javaMailSender;
+//    @Autowired
+//    private JavaMailSender javaMailSender;
 
     @Override
     public ResponseEntity registration(RegistrationReq registrationReq) throws Exception {
@@ -41,7 +41,7 @@ public class SignUpServiceImpl implements SignUpService {
         userDao.saveOrUpdate(entity);
         String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
         registrationUUIDDao.save(RegistrationUUIDEntity.of(uuid, entity));
-        sendEmail(email, uuid);
+//        sendEmail(email, uuid);
         return ResponseEntity.ok().build();
     }
 
@@ -56,25 +56,27 @@ public class SignUpServiceImpl implements SignUpService {
         registrationUUIDDao.delete(rue);
     }
 
-    private void sendEmail(String email, String uuid) throws UnknownHostException {
-        String baseUrl = InetAddress.getLocalHost().getHostAddress();
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(email);
-        simpleMailMessage.setSubject("Account activation");
-        simpleMailMessage.setText("Follow this lint to activate your account " +
-                "<a href=" + baseUrl + "/activate?uuid=" + uuid + " >here</a>");
-        try {
-            javaMailSender.send(simpleMailMessage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    private void sendEmail(String email, String uuid) throws UnknownHostException {
+//        String baseUrl = InetAddress.getLocalHost().getHostAddress();
+//        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+//        simpleMailMessage.setTo(email);
+//        simpleMailMessage.setSubject("Account activation");
+//        simpleMailMessage.setText("Follow this lint to activate your account " +
+//                "<a href=" + baseUrl + "/activate?uuid=" + uuid + " >here</a>");
+//        try {
+//            javaMailSender.send(simpleMailMessage);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public AuthorizedUser loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity ue = userDao.getByEmail(username);
         if (ue == null)
             throw new IllegalArgumentException("Email is never used");
+        if (!ue.isActive())
+            throw new IllegalArgumentException("Used is inactive");
         return new AuthorizedUser(ue);
     }
 }

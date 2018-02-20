@@ -90,7 +90,7 @@ public class UserEntity extends BaseEntity {
     }
 
     public static UserEntity of(RegistrationReq registrationReq) {
-        return new UserEntity(registrationReq.getEmail(), registrationReq.getPassWord(),
+        return new UserEntity(registrationReq.getEmail(), registrationReq.getPassword(),
                 registrationReq.getFirstName(), registrationReq.getLastName(), registrationReq.getRole());
     }
 }

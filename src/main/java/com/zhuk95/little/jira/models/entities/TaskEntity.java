@@ -1,5 +1,7 @@
 package com.zhuk95.little.jira.models.entities;
 
+import com.zhuk95.little.jira.models.api.req.CreateTaskReq;
+import com.zhuk95.little.jira.models.api.req.UpdateTaskReq;
 import com.zhuk95.little.jira.models.enums.TaskStatus;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -28,6 +30,13 @@ public class TaskEntity extends BaseEntity {
     private List<CommentEntity> comments;
 
     public TaskEntity() {
+    }
+
+    private TaskEntity(String name, String description, ProjectEntity project, TaskStatus taskStatus) {
+        this.name = name;
+        this.description = description;
+        this.project = project;
+        this.taskStatus = taskStatus;
     }
 
     public String getName() {
@@ -68,5 +77,15 @@ public class TaskEntity extends BaseEntity {
 
     public void setProject(ProjectEntity project) {
         this.project = project;
+    }
+
+    public static TaskEntity of(CreateTaskReq createTaskReq, ProjectEntity entity) {
+        return new TaskEntity(createTaskReq.getName(), createTaskReq.getDescription(), entity, TaskStatus.WAITIN);
+    }
+
+    public void update(UpdateTaskReq updateTaskReq) {
+        this.description = updateTaskReq.getDescription() == null ? this.description : updateTaskReq.getDescription();
+        this.name = updateTaskReq.getName() == null ? this.name : updateTaskReq.getName();
+        this.taskStatus = updateTaskReq.getTaskStatus() == null ? this.taskStatus : updateTaskReq.getTaskStatus();
     }
 }

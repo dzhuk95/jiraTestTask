@@ -5,12 +5,12 @@ import com.zhuk95.little.jira.services.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//TODO Add SignUpLogic
 @RestController
 @RequestMapping(value = "api", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class SignUpRestController {
@@ -18,14 +18,8 @@ public class SignUpRestController {
     @Autowired
     SignUpService signUpService;
 
-    @PostMapping(value = "signUp", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity sigUp() {
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping(value = "registration", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity registration(@RequestBody RegistrationReq registrationReq) throws Exception {
-        signUpService.registration(registrationReq);
-        return ResponseEntity.ok().build();
+    public ResponseEntity registration(@RequestBody @Validated RegistrationReq registrationReq) throws Exception {
+       return signUpService.registration(registrationReq);
     }
 }

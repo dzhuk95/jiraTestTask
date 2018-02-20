@@ -1,8 +1,10 @@
 package com.zhuk95.little.jira.models.api.req;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class CreateProjectReq {
+    @NotNull(message = "Project name must not be null")
     private String name;
     private List<Integer> userIds;
 

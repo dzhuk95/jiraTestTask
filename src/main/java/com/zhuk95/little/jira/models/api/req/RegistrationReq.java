@@ -5,15 +5,15 @@ import com.zhuk95.little.jira.models.enums.Role;
 import javax.validation.constraints.NotNull;
 
 public class RegistrationReq {
-    @NotNull
+    @NotNull(message = "Email must not be null")
     private String email;
-    @NotNull
-    private String passWord;
-    @NotNull
+    @NotNull(message = "Password must not be null")
+    private String password;
+    @NotNull(message = "First Name must not be null")
     private String firstName;
-    @NotNull
+    @NotNull(message = "Last Name must not be null")
     private String lastName;
-    @NotNull
+    @NotNull(message = "Role must not be null")
     private Role role;
 
     public RegistrationReq() {
@@ -27,12 +27,12 @@ public class RegistrationReq {
         this.email = email;
     }
 
-    public String getPassWord() {
-        return passWord;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {

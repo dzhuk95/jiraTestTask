@@ -6,6 +6,7 @@ import com.zhuk95.little.jira.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,12 +17,12 @@ public class CommentsRestController {
     private CommentService commentService;
 
     @PostMapping(value = "add", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity addComment(CreateCommentReq createCommentReq) {
+    public ResponseEntity addComment(@RequestBody @Validated CreateCommentReq createCommentReq) {
         return commentService.addComment(createCommentReq);
     }
 
     @PostMapping(value = "edit", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity editComment(EditCommentReq editCommentReq) {
+    public ResponseEntity editComment(@RequestBody @Validated EditCommentReq editCommentReq) {
         return commentService.editComment(editCommentReq);
     }
 

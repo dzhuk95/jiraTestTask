@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TaskDaoImpl implements TaskDao {
@@ -33,6 +34,11 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     @Override
+    public void saveOrUpdate(List<UserTaskEntity> taskEntity) {
+        userTaskRepository.save(taskEntity);
+    }
+
+    @Override
     @Transactional
     @Modifying
     public void deleteTask(TaskEntity task) {
@@ -42,5 +48,10 @@ public class TaskDaoImpl implements TaskDao {
     @Override
     public TaskEntity get(int id) {
         return taskRepository.findOne(id);
+    }
+
+    @Override
+    public Optional<UserTaskEntity> getByUserIdAndTaskId(int userId, int taskId) {
+        return userTaskRepository.findByUserIdAndTaskId(userId, taskId);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserTaskRepository extends JpaRepository<UserTaskEntity, Integer> {
 
@@ -15,4 +16,9 @@ public interface UserTaskRepository extends JpaRepository<UserTaskEntity, Intege
             " inner join te.project as pe " +
             "WHERE pe.id=:projectId")
     List<UserTaskEntity> getAllTask(@Param("projectId") int projectId);
+
+    @Query("SELECT ute FROM UserTaskEntity as ute " +
+            "inner join ute.task as te" +
+            " WHERE te.id=:taskId AND ute.user.id=:userId")
+    Optional<UserTaskEntity> findByUserIdAndTaskId(@Param("userId") int userId, @Param("taskID") int taskId);
 }

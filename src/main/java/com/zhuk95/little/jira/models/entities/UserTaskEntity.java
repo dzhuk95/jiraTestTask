@@ -16,6 +16,11 @@ public class UserTaskEntity extends BaseEntity {
     public UserTaskEntity() {
     }
 
+    private UserTaskEntity(TaskEntity task, UserEntity user) {
+        this.task = task;
+        this.user = user;
+    }
+
     public TaskEntity getTask() {
         return task;
     }
@@ -30,5 +35,9 @@ public class UserTaskEntity extends BaseEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    public static UserTaskEntity of(TaskEntity taskEntity, UserEntity userEntity) {
+        return new UserTaskEntity(taskEntity, userEntity);
     }
 }

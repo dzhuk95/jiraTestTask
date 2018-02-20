@@ -4,6 +4,7 @@ import com.zhuk95.little.jira.models.AuthorizedUser;
 import com.zhuk95.little.jira.models.entities.UserEntity;
 import com.zhuk95.little.jira.models.enums.Role;
 import javassist.NotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -30,7 +31,8 @@ public class WebFilter extends GenericFilterBean {
                 throw new IllegalArgumentException("User is not login");
             if (ue.getRole() == Role.DEVELOPER)
                 throw new IllegalArgumentException("Developer can not create projects");
-            chain.doFilter(req, resp);
-        }
+            chain.doFilter(request, response);
+        } else
+            chain.doFilter(request, response);
     }
 }

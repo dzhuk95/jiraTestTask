@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -23,14 +24,16 @@ public class SecureConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/", "/signUp", "/api/registration").permitAll()
+        http.authorizeRequests().antMatchers("/", "/h2/**", "/signUp", "/api/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").permitAll()
+                .formLogin().loginPage("/login").usernameParameter("email").passwordParameter("password")
+                .loginProcessingUrl("/spring_security_check")
+                .defaultSuccessUrl("/project", true).permitAll()
                 .and()
                 .logout().logoutUrl("/logOut").permitAll()
                 .and()
-                .addFilter(new WebFilter());
+                .addFilterAfter(new WebFilter(), BasicAuthenticationFilter.class);
         http.csrf().disable().headers().frameOptions().disable();
     }
 
