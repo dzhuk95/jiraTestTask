@@ -20,5 +20,5 @@ public interface UserTaskRepository extends JpaRepository<UserTaskEntity, Intege
     @Query("SELECT ute FROM UserTaskEntity as ute " +
             "inner join ute.task as te" +
             " WHERE te.id=:taskId AND ute.user.id=:userId")
-    Optional<UserTaskEntity> findByUserIdAndTaskId(@Param("userId") int userId, @Param("taskID") int taskId);
+    Optional<UserTaskEntity> findByUserIdAndTaskId(@Param("userId") int userId, @Param("taskId") int taskId);
 }

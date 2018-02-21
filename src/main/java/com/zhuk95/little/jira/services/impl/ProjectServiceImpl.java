@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -44,7 +45,9 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectEntity projectEntity = ProjectEntity.of(createProjectReq);
         projectDao.saveOrUpdate(projectEntity);
 
-        List<Integer> userIds = createProjectReq.getUserIds();
+        List<Integer> userIds1 = createProjectReq.getUserIds();
+        List<Integer> userIds = userIds1 == null ?
+                new ArrayList<>() : userIds1;
         userIds.add(AuthorizedUser.id());
 
         List<UserEntity> usersToProject = userDao.findAllById(userIds);
