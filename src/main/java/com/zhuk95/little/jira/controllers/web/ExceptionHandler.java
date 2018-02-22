@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.zhuk95.little.jira.util.utilVaraibles.headers;
+import static com.zhuk95.little.jira.util.UtilVaraibles.headers;
 
 @ControllerAdvice(annotations = {RestController.class, Controller.class})
 public class ExceptionHandler {

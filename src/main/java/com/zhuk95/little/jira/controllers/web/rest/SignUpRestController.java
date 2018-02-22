@@ -1,5 +1,6 @@
 package com.zhuk95.little.jira.controllers.web.rest;
 
+import com.zhuk95.little.jira.models.api.req.CreateUserReq;
 import com.zhuk95.little.jira.models.api.req.RegistrationReq;
 import com.zhuk95.little.jira.services.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class SignUpRestController {
 
     @Autowired
-    SignUpService signUpService;
+    private SignUpService signUpService;
 
     @PostMapping(value = "registration", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity registration(@RequestBody @Validated RegistrationReq registrationReq) throws Exception {
        return signUpService.registration(registrationReq);
+    }
+
+    @PostMapping(value = "signUp", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity registration(@RequestBody @Validated CreateUserReq createUserReq) throws Exception {
+       return signUpService.login(createUserReq);
     }
 }

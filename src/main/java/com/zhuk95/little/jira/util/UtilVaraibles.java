@@ -5,7 +5,7 @@ import org.springframework.http.MediaType;
 
 import java.util.regex.Pattern;
 
-public class utilVaraibles {
+public class UtilVaraibles {
     public static ThreadLocal<HttpHeaders> headers = ThreadLocal.withInitial(() -> {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(MediaType.APPLICATION_JSON_UTF8_VALUE));

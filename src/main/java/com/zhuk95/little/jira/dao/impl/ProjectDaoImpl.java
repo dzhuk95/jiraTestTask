@@ -6,9 +6,12 @@ import com.zhuk95.little.jira.dao.repository.ProjectUserRepository;
 import com.zhuk95.little.jira.models.entities.ProjectEntity;
 import com.zhuk95.little.jira.models.entities.ProjectUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProjectDaoImpl implements ProjectDao {
@@ -18,18 +21,18 @@ public class ProjectDaoImpl implements ProjectDao {
     private ProjectUserRepository projectUserRepository;
 
     @Override
-    public List<ProjectEntity> getAllByUser(int userId) {
-        return null;
+    public Page<ProjectUserEntity> getAllByUser(int userId, Pageable pageable) {
+        return projectUserRepository.getByUserId(userId, pageable);
     }
 
     @Override
-    public List<ProjectEntity> getAll() {
-        return projectRepository.findAll();
+    public Page<ProjectEntity> getAll(Pageable pageable) {
+        return projectRepository.findAll(pageable);
     }
 
     @Override
-    public ProjectEntity getById(int id) {
-        return projectRepository.findOne(id);
+    public Optional<ProjectEntity> getById(int id) {
+        return projectRepository.getById(id);
     }
 
     @Override

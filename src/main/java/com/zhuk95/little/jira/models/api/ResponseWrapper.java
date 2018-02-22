@@ -2,6 +2,8 @@ package com.zhuk95.little.jira.models.api;
 
 import com.zhuk95.little.jira.models.enums.ResponseStatus;
 
+import java.util.Objects;
+
 public class ResponseWrapper {
     private ResponseStatus status;
     private String message;
@@ -23,6 +25,22 @@ public class ResponseWrapper {
     public ResponseWrapper(ResponseStatus status, String message) {
         this.status = status;
         this.message = message;
+    }
+
+    public static ResponseWrapper ok() {
+        return new ResponseWrapper(ResponseStatus.SUCCESS);
+    }
+
+    public static ResponseWrapper ok(Object o) {
+        return new ResponseWrapper(ResponseStatus.SUCCESS, null, o);
+    }
+
+    public static ResponseWrapper failure() {
+        return new ResponseWrapper(ResponseStatus.FAILURE);
+    }
+
+    public static ResponseWrapper failure(String str) {
+        return new ResponseWrapper(ResponseStatus.FAILURE, str);
     }
 
     public ResponseStatus getStatus() {

@@ -6,18 +6,25 @@ import com.zhuk95.little.jira.dao.UserDao;
 import com.zhuk95.little.jira.models.AuthorizedUser;
 import com.zhuk95.little.jira.models.api.req.AddUserToProjectReq;
 import com.zhuk95.little.jira.models.api.req.CreateProjectReq;
+import com.zhuk95.little.jira.models.api.req.GridReq;
 import com.zhuk95.little.jira.models.api.resp.ListResp;
 import com.zhuk95.little.jira.models.entities.ProjectEntity;
 import com.zhuk95.little.jira.models.entities.ProjectUserEntity;
 import com.zhuk95.little.jira.models.entities.UserEntity;
 import com.zhuk95.little.jira.models.enums.ResponseStatus;
 import com.zhuk95.little.jira.services.ProjectService;
+import com.zhuk95.little.jira.util.UtilVaraibles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -29,15 +36,19 @@ public class ProjectServiceImpl implements ProjectService {
     private UserDao userDao;
 
     @Override
-    public ResponseEntity getProjects() {
-        List<ProjectEntity> project = projectDao.getAll();
-        return ResponseEntity.ok(new ResponseWrapper(new ListResp(project.size(), project)));
+    public ResponseEntity getProjects(GridReq gridReq) {
+        Pageable pageable = new PageRequest(gridReq.getCurrentPage(), gridReq.getLimit());
+        Page<ProjectEntity> project = projectDao.getAll(pageable);
+        return ResponseEntity.ok(ResponseWrapper.ok(new ListResp(project.getTotalElements(),
+                project.getContent())));
     }
 
     @Override
-    public ResponseEntity getProjectsForUser() {
-        List<ProjectEntity> project = projectDao.getAllByUser(AuthorizedUser.id());
-        return ResponseEntity.ok(new ResponseWrapper(new ListResp(project.size(), project)));
+    public ResponseEntity getProjectsForUser(GridReq gridReq) {
+        Pageable pageable = new PageRequest(gridReq.getCurrentPage(), gridReq.getLimit());
+        Page<ProjectUserEntity> project = projectDao.getAllByUser(AuthorizedUser.id(), pageable);
+        return ResponseEntity.ok(ResponseWrapper.ok(new ListResp(project.getTotalElements(),
+                project.getContent())));
     }
 
     @Override
@@ -54,7 +65,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         projectDao.saveOrUpdate(usersToProject.stream().
                 map(item -> ProjectUserEntity.of(item, projectEntity)).collect(toList()));
-        return ResponseEntity.ok(new ResponseWrapper(ResponseStatus.SUCCESS));
+        return ResponseEntity.ok(ResponseWrapper.ok());
     }
 
     @Override
@@ -62,10 +73,14 @@ public class ProjectServiceImpl implements ProjectService {
         if (addUserToProjectReq.getProjectId() == 0)
             throw new IllegalArgumentException("Project id must not be null");
 
-        ProjectEntity entity = projectDao.getById(addUserToProjectReq.getProjectId());
-        List<UserEntity> usersToProject = userDao.findAllById(addUserToProjectReq.getIds());
-        projectDao.saveOrUpdate(usersToProject.stream().
-                map(item -> ProjectUserEntity.of(item, entity)).collect(toList()));
-        return ResponseEntity.ok(new ResponseWrapper(ResponseStatus.SUCCESS));
+        Optional<ProjectEntity> entity = projectDao.getById(addUserToProjectReq.getProjectId());
+        if (entity.isPresent()) {
+            List<UserEntity> usersToProject = userDao.findAllById(addUserToProjectReq.getIds());
+            projectDao.saveOrUpdate(usersToProject.stream().
+                    map(item -> ProjectUserEntity.of(item, entity.get())).collect(toList()));
+            return ResponseEntity.ok(ResponseWrapper.ok());
+        } else
+            return new ResponseEntity(ResponseWrapper.failure("Project not found"), UtilVaraibles.headers.get(),
+                    HttpStatus.NOT_FOUND);
     }
 }

@@ -6,14 +6,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     @Query("SELECT ue FROM UserEntity as ue WHERE ue.active=true")
     List<UserEntity> getAllUser();
+
     @Query("SELECT ue FROM UserEntity as ue WHERE ue.email=:email")
-    UserEntity findByEmail(@Param("email")String email);
+    UserEntity findByEmail(@Param("email") String email);
+
+    @Query("SELECT ue FROM UserEntity as ue WHERE ue.email=:email AND ue.passWord=:passWord")
+    Optional<UserEntity> findByEmailAndPassword(@Param("email") String email, @Param("password") String password);
 
     @Query("SELECT ue FROM UserEntity as ue WHERE ue.id in:ids AND ue.active=true")
-    List<UserEntity> findById(@Param("ids")List<Integer> ids);
+    List<UserEntity> findById(@Param("ids") List<Integer> ids);
 }

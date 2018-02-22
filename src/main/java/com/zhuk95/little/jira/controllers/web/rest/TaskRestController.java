@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class TaskRestController {
 
     @Autowired
-    TaskService taskService;
+    private TaskService taskService;
 
     @GetMapping
     public ResponseEntity getTask(@RequestParam int taskId) {
