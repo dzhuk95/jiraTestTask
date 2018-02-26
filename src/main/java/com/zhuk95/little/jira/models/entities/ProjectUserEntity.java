@@ -1,5 +1,8 @@
 package com.zhuk95.little.jira.models.entities;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -9,10 +12,12 @@ import javax.persistence.Table;
 @Table(name = "project_user")
 public class ProjectUserEntity extends BaseEntity {
     @ManyToOne
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
 
     @ManyToOne
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 

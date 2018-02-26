@@ -29,8 +29,7 @@ public class WebFilter extends GenericFilterBean {
                 throw new IllegalArgumentException("User is not login");
             if (ue.getRole() == Role.DEVELOPER)
                 throw new IllegalArgumentException("Developer can not create projects");
-            chain.doFilter(request, response);
-        } else
-            chain.doFilter(request, response);
+        }
+        chain.doFilter(request, response);
     }
 }

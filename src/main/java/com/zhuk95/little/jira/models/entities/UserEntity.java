@@ -15,7 +15,7 @@ public class UserEntity extends BaseEntity {
     private String email;
 
     @Column(name = "password", nullable = false)
-    private String passWord;
+    private String password;
 
     @Column(name = "first_name", nullable = false)
     private String firsName;
@@ -35,7 +35,7 @@ public class UserEntity extends BaseEntity {
 
     public UserEntity(String email, String passWord, String firsName, String lastName, Role role) {
         this.email = email;
-        this.passWord = passWord;
+        this.password = passWord;
         this.firsName = firsName;
         this.lastName = lastName;
         this.role = role;
@@ -57,12 +57,12 @@ public class UserEntity extends BaseEntity {
         this.email = email;
     }
 
-    public String getPassWord() {
-        return passWord;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirsName() {

@@ -3,16 +3,19 @@ package com.zhuk95.little.jira.services.impl;
 import com.zhuk95.little.jira.dao.RegistrationUUIDDao;
 import com.zhuk95.little.jira.dao.UserDao;
 import com.zhuk95.little.jira.models.AuthorizedUser;
-import com.zhuk95.little.jira.models.api.req.CreateUserReq;
+import com.zhuk95.little.jira.models.api.ResponseWrapper;
+import com.zhuk95.little.jira.models.api.req.LoginReq;
 import com.zhuk95.little.jira.models.api.req.RegistrationReq;
 import com.zhuk95.little.jira.models.entities.RegistrationUUIDEntity;
 import com.zhuk95.little.jira.models.entities.UserEntity;
 import com.zhuk95.little.jira.services.SignUpService;
+import com.zhuk95.little.jira.util.UtilVaraibles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.mail.SimpleMailMessage;
 //import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.SpringSecurityCoreVersion;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -50,13 +53,16 @@ public class SignUpServiceImpl implements SignUpService {
 
     @Override
     //TODO add rest auth
-    public ResponseEntity login(CreateUserReq createUserReq) throws Exception {
-//        Optional<UserEntity> user = userDao.getByEmailAndPassword(createUserReq.getEmail(), createUserReq.getPassword());
-//        if (user.isPresent()) {
-//            AuthorizedUser authorizedUser = new AuthorizedUser(user.get());
-//            SecurityContextHolder.getContext().setAuthentication(authorizedUser);
-//        }
-        return null;
+    public ResponseEntity login(LoginReq loginReq) throws Exception {
+        Optional<UserEntity> user = userDao.getByEmailAndPassword(loginReq.getEmail(), loginReq.getPassword());
+        if (user.isPresent()) {
+            AuthorizedUser authorizedUser = new AuthorizedUser(user.get());
+            SecurityContextHolder.getContext()
+                    .setAuthentication(new UsernamePasswordAuthenticationToken(authorizedUser,
+                            authorizedUser.getPassword()));
+            return ResponseEntity.ok(ResponseWrapper.ok());
+        }
+        return new ResponseEntity(ResponseWrapper.failure(), UtilVaraibles.headers.get(), HttpStatus.NOT_FOUND);
     }
 
     @Override

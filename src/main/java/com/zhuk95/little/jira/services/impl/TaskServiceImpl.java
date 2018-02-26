@@ -32,9 +32,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public ResponseEntity createTask(CreateTaskReq createTaskReq) {
-        ProjectEntity pe = projectDao.getById(createTaskReq.getProjectId());
-        if (pe == null) throw new IllegalArgumentException("Project is not exist");
-        TaskEntity taskEntity = TaskEntity.of(createTaskReq, pe);
+        Optional<ProjectEntity> pe = projectDao.getById(createTaskReq.getProjectId());
+        if (!pe.isPresent()) throw new IllegalArgumentException("Project is not exist");
+        TaskEntity taskEntity = TaskEntity.of(createTaskReq, pe.get());
 
         List<Integer> developers = createTaskReq.getDevelopers() == null ? new ArrayList<>() : createTaskReq.getDevelopers();
         if (developers.isEmpty())
@@ -57,7 +57,7 @@ public class TaskServiceImpl implements TaskService {
         Optional<UserTaskEntity> ute = taskDao.getByUserIdAndTaskId(AuthorizedUser.id(), id);
         if (ute.isPresent())
             return ResponseEntity.ok(new ResponseWrapper(ResponseStatus.SUCCESS, null, ute.get().getTask()));
-        return  ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().build();
     }
 
 

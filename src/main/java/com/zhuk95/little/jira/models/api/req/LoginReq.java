@@ -1,16 +1,14 @@
 package com.zhuk95.little.jira.models.api.req;
 
-import com.zhuk95.little.jira.models.enums.Role;
-
 import javax.validation.constraints.NotNull;
 
-public class CreateUserReq {
+public class LoginReq {
     @NotNull(message = "Email must not be null")
     private String email;
     @NotNull(message = "Password must not be null")
     private String password;
 
-    public CreateUserReq() {
+    public LoginReq() {
     }
 
     public String getEmail() {

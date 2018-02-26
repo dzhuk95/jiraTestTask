@@ -13,11 +13,8 @@ public interface ProjectUserRepository extends JpaRepository<ProjectUserEntity, 
 
     @Query(value = "SELECT pue FROM ProjectUserEntity as pue " +
             "inner join fetch pue.project as p" +
-            "inner join fetch pue.user as u" +
+            " inner join fetch pue.user as u" +
             " WHERE u.id=:userId",
-            countQuery = "SELECT count (pue) FROM ProjectUserEntity as pue " +
-                    "inner join fetch pue.project as p" +
-                    "inner join fetch pue.user as u" +
-                    " WHERE u.id=:userId")
+            countQuery = "SELECT count (pue) FROM ProjectUserEntity as pue WHERE pue.user.id=:userId")
     Page<ProjectUserEntity> getByUserId(@Param("userId") int userId, Pageable pageable);
 }
